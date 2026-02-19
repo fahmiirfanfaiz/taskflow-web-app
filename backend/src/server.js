@@ -4,8 +4,12 @@ const port = process.env.PORT || 5000;
 const app = express();
 const connectDB = require("./configs/db");
 const mongoose = require("mongoose");
+const taskRoutes = require("./routes/taskRoute");
 
 process.env.TZ = "Asia/Jakarta";
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 process.on("SIGINT", async () => {
   try {
@@ -16,6 +20,8 @@ process.on("SIGINT", async () => {
   }
   process.exit(0);
 });
+
+app.use(taskRoutes);
 
 (async () => {
   const dbConnected = await connectDB();
